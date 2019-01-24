@@ -70,3 +70,29 @@ func TestHeadStringMay(t *testing.T) {
 		)
 	}
 }
+
+func TestForceString(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		s   *string
+		ret string
+	}{
+		{nil, ""},
+		{myutil.NewString("foo"), "foo"},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("force string %s", test.ret),
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.ForceString(test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}

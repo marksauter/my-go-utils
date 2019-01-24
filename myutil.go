@@ -23,3 +23,11 @@ func HeadStringMay(ss []string) *string {
 	}
 	return nil
 }
+
+// Returns dereferenced value of string pointer or empty string if nil
+func ForceString(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
+}
