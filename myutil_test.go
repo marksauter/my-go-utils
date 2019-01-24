@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/marksauter/myutil"
+	"github.com/marksauter/my-go-utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -37,6 +37,33 @@ func TestElemString(t *testing.T) {
 			func(t *testing.T) {
 				expected := test.has
 				actual := myutil.ElemString(test.e, ss)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
+func TestHeadStringMay(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		ss  []string
+		ret *string
+	}{
+		{[]string{}, nil},
+		{[]string{"foo"}, myutil.NewString("foo")},
+		{[]string{"bar", "baz"}, myutil.NewString("bar")},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("%s head", test.ss),
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.HeadStringMay(test.ss)
 
 				assert.Equal(t, expected, actual, "unexpected return")
 			},
