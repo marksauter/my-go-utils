@@ -1,33 +1,24 @@
-// Package myutil contains common utility functions I (marksauter) use across projects
+// Package myutil contains common utility functions I (marksauter) use across
+// projects
 package myutil
 
-// Returns a pointer to a string
-func NewString(s string) *string {
-	return &s
-}
+import (
+	"fmt"
+	"path/filepath"
+	"runtime"
+)
 
-// Returns true if the slice contains a string equal to the first argument
-func ElemString(e string, ss []string) bool {
-	for _, s := range ss {
-		if s == e {
-			return true
-		}
-	}
-	return false
-}
-
-// Returns optional head string of a []string
-func HeadStringMay(ss []string) *string {
-	if len(ss) > 0 {
-		return &ss[0]
-	}
-	return nil
-}
-
-// Returns dereferenced value of string pointer or empty string if nil
-func ForceString(s *string) string {
-	if s == nil {
-		return ""
-	}
-	return *s
+// Returns string with function name, line number, and message for logging
+// purposes.
+func Trace(message string) string {
+	pc := make([]uintptr, 15)
+	n := runtime.Callers(2, pc)
+	frames := runtime.CallersFrames(pc[:n])
+	frame, _ := frames.Next()
+	return fmt.Sprintf(
+		"%s:%d: %s",
+		filepath.Base(frame.Function),
+		frame.Line,
+		message,
+	)
 }
