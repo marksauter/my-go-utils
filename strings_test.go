@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/marksauter/my-go-utils"
+	"github.com/marksauter/myutil-go"
 	"github.com/stretchr/testify/assert"
 )
 

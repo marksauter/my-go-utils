@@ -1,1 +1,1 @@
-# my-go-utils
+# myutil-go
