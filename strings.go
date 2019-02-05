@@ -90,3 +90,12 @@ func MapS(vs []string, f func(string) string) []string {
 	}
 	return vsm
 }
+
+// Returns a new string pointer with `f` applied to the value at `v` if not nil.
+func ApplyS(v *string, f func(string) string) *string {
+	if v != nil {
+		va := f(*v)
+		return &va
+	}
+	return v
+}

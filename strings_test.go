@@ -303,3 +303,39 @@ func TestMapS(t *testing.T) {
 		)
 	}
 }
+
+func TestApplyS(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		label string
+		v     *string
+		f     func(string) string
+		ret   *string
+	}{
+		{"apply to not nil value",
+			myutil.NewS("foo"),
+			func(s string) string { return s + "bar" },
+			myutil.NewS("foobar"),
+		},
+		{"apply to nil value",
+			nil,
+			func(s string) string { return s + "bar" },
+			nil,
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("%s?", test.label),
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.ApplyS(test.v, test.f)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
