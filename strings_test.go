@@ -8,6 +8,58 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestFromMayS(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		s   *string
+		ret string
+	}{
+		{nil, ""},
+		{myutil.JustS("foo"), "foo"},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("from maybe string %s", test.ret),
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.FromMayS(test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
+func TestCopyS(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		s   *string
+		ret *string
+	}{
+		{nil, nil},
+		{myutil.JustS("foo"), myutil.JustS("foo")},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("copy maybe string %v", test.ret),
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.CopyS(test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
 func TestHeadMayS(t *testing.T) {
 	t.Parallel()
 
@@ -16,8 +68,8 @@ func TestHeadMayS(t *testing.T) {
 		ret *string
 	}{
 		{[]string{}, nil},
-		{[]string{"foo"}, myutil.NewS("foo")},
-		{[]string{"bar", "baz"}, myutil.NewS("bar")},
+		{[]string{"foo"}, myutil.JustS("foo")},
+		{[]string{"bar", "baz"}, myutil.JustS("bar")},
 	}
 
 	for _, test := range tests {
@@ -43,8 +95,8 @@ func TestTailMayS(t *testing.T) {
 		ret *string
 	}{
 		{[]string{}, nil},
-		{[]string{"foo"}, myutil.NewS("foo")},
-		{[]string{"bar", "baz"}, myutil.NewS("baz")},
+		{[]string{"foo"}, myutil.JustS("foo")},
+		{[]string{"bar", "baz"}, myutil.JustS("baz")},
 	}
 
 	for _, test := range tests {
@@ -55,32 +107,6 @@ func TestTailMayS(t *testing.T) {
 			func(t *testing.T) {
 				expected := test.ret
 				actual := myutil.TailMayS(test.ss)
-
-				assert.Equal(t, expected, actual, "unexpected return")
-			},
-		)
-	}
-}
-
-func TestJustS(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		s   *string
-		ret string
-	}{
-		{nil, ""},
-		{myutil.NewS("foo"), "foo"},
-	}
-
-	for _, test := range tests {
-		test := test
-
-		t.Run(
-			fmt.Sprintf("force string %s", test.ret),
-			func(t *testing.T) {
-				expected := test.ret
-				actual := myutil.JustS(test.s)
 
 				assert.Equal(t, expected, actual, "unexpected return")
 			},
@@ -314,9 +340,9 @@ func TestApplyS(t *testing.T) {
 		ret   *string
 	}{
 		{"apply to not nil value",
-			myutil.NewS("foo"),
+			myutil.JustS("foo"),
 			func(s string) string { return s + "bar" },
-			myutil.NewS("foobar"),
+			myutil.JustS("foobar"),
 		},
 		{"apply to nil value",
 			nil,

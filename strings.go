@@ -1,8 +1,25 @@
 package myutil
 
 // Returns a pointer to a string
-func NewS(s string) *string {
+func JustS(s string) *string {
 	return &s
+}
+
+// Returns the value of a string pointer, or empty string if the pointer is nil
+func FromMayS(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
+}
+
+// Returns a copy of a sring pointer value, or nil if the pointer is nil.
+func CopyS(s *string) *string {
+	if s == nil {
+		return nil
+	}
+	cp := *s
+	return &cp
 }
 
 // Returns a pointer to the first string in the slice, or nil if the slice is
@@ -21,14 +38,6 @@ func TailMayS(ss []string) *string {
 		return &ss[len(ss)-1]
 	}
 	return nil
-}
-
-// Returns the value of a string pointer, or empty string if the pointer is nil
-func JustS(s *string) string {
-	if s == nil {
-		return ""
-	}
-	return *s
 }
 
 // Returns the first index of the target string `t`, or
