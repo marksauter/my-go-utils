@@ -8,15 +8,54 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFromMayS(t *testing.T) {
+func TestFromJustS(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		s   *string
-		ret string
+		s           *string
+		ret         string
+		shouldPanic bool
 	}{
-		{nil, ""},
-		{myutil.JustS("foo"), "foo"},
+		{nil, "", true},
+		{myutil.JustS("bar"), "bar", false},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("from just string %s", test.ret),
+			func(t *testing.T) {
+				defer func() {
+					if test.shouldPanic {
+						if r := recover(); r == nil {
+							t.Errorf("The code did not panic")
+						}
+					} else {
+						if r := recover(); r != nil {
+							t.Errorf("The code paniced")
+						}
+					}
+				}()
+				expected := test.ret
+				actual := myutil.FromJustS(test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
+func TestFromMaybeS(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		defaultValue string
+		s            *string
+		ret          string
+	}{
+		{"", nil, ""},
+		{"foo", myutil.JustS("bar"), "bar"},
 	}
 
 	for _, test := range tests {
@@ -26,7 +65,7 @@ func TestFromMayS(t *testing.T) {
 			fmt.Sprintf("from maybe string %s", test.ret),
 			func(t *testing.T) {
 				expected := test.ret
-				actual := myutil.FromMayS(test.s)
+				actual := myutil.FromMaybeS(test.defaultValue, test.s)
 
 				assert.Equal(t, expected, actual, "unexpected return")
 			},
@@ -60,7 +99,7 @@ func TestCopyS(t *testing.T) {
 	}
 }
 
-func TestHeadMayS(t *testing.T) {
+func TestHeadMaybeS(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -79,7 +118,7 @@ func TestHeadMayS(t *testing.T) {
 			fmt.Sprintf("%s head", test.ss),
 			func(t *testing.T) {
 				expected := test.ret
-				actual := myutil.HeadMayS(test.ss)
+				actual := myutil.HeadMaybeS(test.ss)
 
 				assert.Equal(t, expected, actual, "unexpected return")
 			},
@@ -87,7 +126,7 @@ func TestHeadMayS(t *testing.T) {
 	}
 }
 
-func TestTailMayS(t *testing.T) {
+func TestTailMaybeS(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -106,7 +145,7 @@ func TestTailMayS(t *testing.T) {
 			fmt.Sprintf("%s tail", test.ss),
 			func(t *testing.T) {
 				expected := test.ret
-				actual := myutil.TailMayS(test.ss)
+				actual := myutil.TailMaybeS(test.ss)
 
 				assert.Equal(t, expected, actual, "unexpected return")
 			},

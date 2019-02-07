@@ -1,41 +1,49 @@
 package myutil
 
 // Returns a pointer to a string
-func JustS(s string) *string {
-	return &s
+func JustS(v string) *string {
+	return &v
 }
 
-// Returns the value of a string pointer, or empty string if the pointer is nil
-func FromMayS(s *string) string {
-	if s == nil {
-		return ""
+// Returns the value of a string pointer, or panics if the pointer is nil.
+func FromJustS(v *string) string {
+	if v == nil {
+		panic("myutil.FromJustS: nil pointer")
 	}
-	return *s
+	return *v
+}
+
+// Returns the value of a string pointer, or 'defaultValue' if the pointer is nil.
+func FromMaybeS(defaultValue string, v *string) string {
+	if v == nil {
+		return defaultValue
+	}
+	return *v
 }
 
 // Returns a copy of a sring pointer value, or nil if the pointer is nil.
-func CopyS(s *string) *string {
-	if s == nil {
+func CopyS(v *string) *string {
+	if v == nil {
 		return nil
 	}
-	cp := *s
+	cp := *v
 	return &cp
 }
 
 // Returns a pointer to the first string in the slice, or nil if the slice is
 // empty
-func HeadMayS(ss []string) *string {
-	if len(ss) > 0 {
-		return &ss[0]
+func HeadMaybeS(vs []string) *string {
+	if len(vs) > 0 {
+		return &vs[0]
 	}
 	return nil
 }
 
 // Returns a pointer to the last string in the slice, or nil if the slice is
 // empty
-func TailMayS(ss []string) *string {
-	if len(ss) > 0 {
-		return &ss[len(ss)-1]
+func TailMaybeS(vs []string) *string {
+	if len(vs) > 0 {
+		return &vs[len(vs)-1]
 	}
 	return nil
 }
