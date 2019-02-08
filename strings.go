@@ -21,6 +21,18 @@ func FromMaybeS(defaultValue string, v *string) string {
 	return *v
 }
 
+// Returns true if both string pointers are the same or have the same string
+// value, false otherwise.
+func EqS(a, b *string) bool {
+	if a == b {
+		return true
+	} else if a != nil && b != nil {
+		return *a == *b
+	} else {
+		return false
+	}
+}
+
 // Returns a copy of a sring pointer value, or nil if the pointer is nil.
 func CopyS(v *string) *string {
 	if v == nil {

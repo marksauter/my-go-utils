@@ -73,6 +73,37 @@ func TestFromMaybeS(t *testing.T) {
 	}
 }
 
+func TestEqS(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		label string
+		a     *string
+		b     *string
+		ret   bool
+	}{
+		{"both nil", nil, nil, true},
+		{"both same", myutil.JustS("foo"), myutil.JustS("foo"), true},
+		{"both different", myutil.JustS("foo"), myutil.JustS("bar"), false},
+		{"'a' nil", myutil.JustS("foo"), nil, false},
+		{"'b' nil", nil, myutil.JustS("foo"), false},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			test.label,
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.EqS(test.a, test.b)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
 func TestCopyS(t *testing.T) {
 	t.Parallel()
 

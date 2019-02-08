@@ -23,6 +23,18 @@ func FromMaybeI(defaultValue int, v *int) int {
 	return *v
 }
 
+// Returns true if both int pointers are the same or have the same int
+// value, false otherwise.
+func EqI(a, b *int) bool {
+	if a == b {
+		return true
+	} else if a != nil && b != nil {
+		return *a == *b
+	} else {
+		return false
+	}
+}
+
 // Returns a copy of a sring pointer value, or nil if the pointer is nil.
 func CopyI(v *int) *int {
 	if v == nil {
@@ -140,6 +152,18 @@ func FromMaybeI32(defaultValue int32, v *int32) int32 {
 	return *v
 }
 
+// Returns true if both int32 pointers are the same or have the same int32
+// value, false otherwise.
+func EqI32(a, b *int32) bool {
+	if a == b {
+		return true
+	} else if a != nil && b != nil {
+		return *a == *b
+	} else {
+		return false
+	}
+}
+
 // Returns a copy of a sring pointer value, or nil if the pointer is nil.
 func CopyI32(v *int32) *int32 {
 	if v == nil {
@@ -255,6 +279,18 @@ func FromMaybeI64(defaultValue int64, v *int64) int64 {
 		return defaultValue
 	}
 	return *v
+}
+
+// Returns true if both int64 pointers are the same or have the same int64
+// value, false otherwise.
+func EqI64(a, b *int64) bool {
+	if a == b {
+		return true
+	} else if a != nil && b != nil {
+		return *a == *b
+	} else {
+		return false
+	}
 }
 
 // Returns a copy of a sring pointer value, or nil if the pointer is nil.

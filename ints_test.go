@@ -8,6 +8,44 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestFromJustI(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		s           *int
+		ret         int
+		shouldPanic bool
+	}{
+		{nil, 0, true},
+		{myutil.JustI(1), 1, false},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("from just int %d", test.ret),
+			func(t *testing.T) {
+				defer func() {
+					if test.shouldPanic {
+						if r := recover(); r == nil {
+							t.Errorf("The code did not panic")
+						}
+					} else {
+						if r := recover(); r != nil {
+							t.Errorf("The code paniced")
+						}
+					}
+				}()
+				expected := test.ret
+				actual := myutil.FromJustI(test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
 func TestFromMaybeI(t *testing.T) {
 	t.Parallel()
 
@@ -28,6 +66,37 @@ func TestFromMaybeI(t *testing.T) {
 			func(t *testing.T) {
 				expected := test.ret
 				actual := myutil.FromMaybeI(test.defaultValue, test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
+func TestEqI(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		label string
+		a     *int
+		b     *int
+		ret   bool
+	}{
+		{"both nil", nil, nil, true},
+		{"both same", myutil.JustI(1), myutil.JustI(1), true},
+		{"both different", myutil.JustI(1), myutil.JustI(2), false},
+		{"'a' nil", myutil.JustI(1), nil, false},
+		{"'b' nil", nil, myutil.JustI(1), false},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			test.label,
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.EqI(test.a, test.b)
 
 				assert.Equal(t, expected, actual, "unexpected return")
 			},
