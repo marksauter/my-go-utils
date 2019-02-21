@@ -2,6 +2,8 @@
 // the functions include variants for int32 and int64 types
 package myutil
 
+import "fmt"
+
 // Returns a pointer to an int
 func JustI(v int) *int {
 	return &v
@@ -42,6 +44,15 @@ func CopyI(v *int) *int {
 	}
 	cp := *v
 	return &cp
+}
+
+// Returns a string representation of the int pointer: if nil then "<nil>", else
+// the value of the int.
+func SprintI(v *int) string {
+	if v == nil {
+		return fmt.Sprintf("%v", v)
+	}
+	return fmt.Sprintf("%d", *v)
 }
 
 // Returns a pointer to the first int in the slice, or nil if the slice is
@@ -173,6 +184,15 @@ func CopyI32(v *int32) *int32 {
 	return &cp
 }
 
+// Returns a string representation of the int32 pointer: if nil then "<nil>", else
+// the value of the int32.
+func SprintI32(v *int32) string {
+	if v == nil {
+		return fmt.Sprintf("%v", v)
+	}
+	return fmt.Sprintf("%d", *v)
+}
+
 // Returns a pointer to the first int32 in the slice, or nil if the slice is
 // empty
 func HeadMayI32(is []int32) *int32 {
@@ -300,6 +320,15 @@ func CopyI64(v *int64) *int64 {
 	}
 	cp := *v
 	return &cp
+}
+
+// Returns a string representation of the int64 pointer: if nil then "<nil>", else
+// the value of the int64.
+func SprintI64(v *int64) string {
+	if v == nil {
+		return fmt.Sprintf("%v", v)
+	}
+	return fmt.Sprintf("%d", *v)
 }
 
 // Returns a pointer to the first int64 in the slice, or nil if the slice is

@@ -1,5 +1,7 @@
 package myutil
 
+import "fmt"
+
 // Returns a pointer to a string
 func JustS(v string) *string {
 	return &v
@@ -40,6 +42,15 @@ func CopyS(v *string) *string {
 	}
 	cp := *v
 	return &cp
+}
+
+// Returns a string representation of the string pointer: if nil then "<nil>",
+// else the value of the string.
+func SprintS(v *string) string {
+	if v == nil {
+		return fmt.Sprintf("%v", v)
+	}
+	return *v
 }
 
 // Returns a pointer to the first string in the slice, or nil if the slice is

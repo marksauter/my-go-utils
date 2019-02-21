@@ -130,6 +130,32 @@ func TestCopyS(t *testing.T) {
 	}
 }
 
+func TestSprintS(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		s   *string
+		ret string
+	}{
+		{nil, "<nil>"},
+		{myutil.JustS("foo"), "foo"},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(
+			fmt.Sprintf("sprint maybe string %s", test.ret),
+			func(t *testing.T) {
+				expected := test.ret
+				actual := myutil.SprintS(test.s)
+
+				assert.Equal(t, expected, actual, "unexpected return")
+			},
+		)
+	}
+}
+
 func TestHeadMaybeS(t *testing.T) {
 	t.Parallel()
 
