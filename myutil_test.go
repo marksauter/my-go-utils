@@ -26,6 +26,10 @@ func TestSlog(t *testing.T) {
 		{[]*int{myutil.JustI(1), myutil.JustI(2), nil}, "[1 2 <nil>]"},
 		{map[interface{}]interface{}{"foo": 1}, "map[foo:1]"},
 		{map[interface{}]interface{}{myutil.JustS("bar"): myutil.JustI(2)}, "map[bar:2]"},
+		{struct {
+			foo *string
+			baz *int
+		}{myutil.JustS("bar"), myutil.JustI(1)}, "{foo:bar baz:1}"},
 	}
 
 	for _, test := range tests {
